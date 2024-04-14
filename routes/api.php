@@ -2,33 +2,16 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Article;
+
+use App\Http\Controllers\ArticleController;
+
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::get('articles', function() {
-    return Article::all();
-});
-
-Route::get('articles/{id}', function($id) {
-    return Article::find($id);
-});
-
-Route::post('articles', function(Request $request) {
-    return Article::create($request->all);
-});
-
-Route::put('articles/{id}', function(Request $request, $id) {
-    $article = Article::findOrFail($id);
-    $article->update($request->all());
-    return $article;
-});
-
-Route::delete('articles/{id}', function($id) {
-    Article::find($id)->delete();
-    return 204;
-});
-
+Route::post('/articles', [ArticleController::class, 'store'])->name('store.article');
+Route::get('/articles', [ArticleController::class, 'index'])->name('index.article');
+Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('show.article');
+Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('update.article');
+Route::delete('/articles/{article}', [ArticleController::class, 'delete'])->name('delete.article');
